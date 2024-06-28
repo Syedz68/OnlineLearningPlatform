@@ -3,8 +3,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Profile
-from .forms import ProfileForm
+from .models import Profile, Course
+from .forms import ProfileForm, CourseForm
 
 # Create your views here.
 def login_page(request):
@@ -43,9 +43,29 @@ def regeister_page(request):
 
 @login_required(login_url='loginpage')
 def inshomepage(request):
-    return render(request, 'instructor/instructor_home.html')
+    courses = Course.objects.filter(user=request.user)
+    return render(request, 'instructor/instructor_home.html', {'courses': courses})
+
+@login_required(login_url='loginpage')
+def viewcourse(request, pk):
+    courses = Course.objects.get(id=pk)
+    return render(request, 'instructor/view_course.html', {'courses': courses})
+
+@login_required(login_url='loginpage')
+def addcourse(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('inshome')
+    else:
+        form = CourseForm(user=request.user)
+    
+    return render(request, 'instructor/add_course.html', {'form': form})
 
 @login_required(login_url='loginpage')
 def stuhomepage(request):
     return render(request, 'students/student_home.html')
+
+
 
