@@ -26,8 +26,18 @@ urlpatterns = [
     path('register/', views.regeister_page,name='registerpage'),
     path('inshome/', views.inshomepage,name='inshome'),
     path('courseview/<str:pk>/', views.viewcourse,name='courseview'),
+    path('courseview/update/<str:pk>/', views.updatecourse, name='updatecourse'),
+    path('courseview/delete/<str:pk>/', views.deletecourse, name='deletecourse'),
+    path('courseview/<str:pk>/addlesson', views.addlesson,name='addlesson'),
+    path('courseview/<str:pk>/updatelesson/<str:lesson_pk>/', views.updatelesson,name='updatelesson'),
+    path('courseview/<str:pk>/deletelesson/<str:lesson_pk>/', views.deletelesson,name='deletelesson'),
     path('courseadd/', views.addcourse,name='courseadd'),
     path('stuhome/', views.stuhomepage,name='stuhome'),
+    path('previewcourse/<str:pk>/', views.previewcourse,name='previewcourse'),
+    path('enrollcourse/<str:pk>/', views.enrollcourse,name='enrollcourse'),
+    path('mycourses/', views.mycourses,name='mycourses'),
+    path('mycoursepreview/<str:pk>/', views.mycoursepreview,name='mycoursepreview'),
+    path('mycoursepreview/<str:pk>/markcomplete/<str:lesson_pk>/', views.markcomplete,name='markcomplete'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block title%}
+Home-Student
+{% endblock %}
+{% block sideitem %}
+<li class="sidebar-item">
+    <a href="{% url 'stuhome' %}" class="sidebar-link">Home</a>
+</li>
+<li class="sidebar-item">
+    <a href="#" class="sidebar-link">My Courses</a>
+</li>
+{% endblock %}
+{% block main %}
+<div class="row g-4 py-5">
+    <div class="col-md-6">
+        <img src="{{ courses.cover.url }}" style="width: 500px;">
+    </div>
+    <div class="col-md-6">
+        <h1 style="font-family: 'Poppins', sans-serif;">{{ courses.title }}</h1>
+        <h5 style="font-family: 'Poppins', sans-serif;">Offered by {{ courses.user }}</h5>
+        <h3>Description</h3>
+        <p>{{ courses.description }}</p>
+        <h3>Progress</h3>
+        {% if progress is not empty %}
+        <div class="progress" style="height:30px">
+            <div class="progress-bar bg-success" style="width:{{ progress }}%">{{ progress }}%</div>
+        </div>
+        {% else %}
+        <div class="progress" style="height:30px">
+            <div class="progress-bar bg-success" style="width: 0%">0%</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    {% if progress == 100.0 %}
+    <h2 class="text-center">Congratulations!! You have successfully completed this course</h2>
+    {% else %}
+    <h2 class="text-center">Lessons to be Completed</h2>
+    {% endif %}
+    <table class="table">
+        <thead class="table-dark">
+          <tr>
+            <th>Topic Name</th>
+            <th>Contents</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for data, progress in combined %}
+          <tr>
+            <td>{{ data.topic }}</td>
+            <td>{{ data.content }}</td>
+            {% if progress.completed %}
+            <td>Completed</td>
+            {% else %}
+            <td>
+                <a href="{% url 'markcomplete' courses.id data.id %}" class="btn btn-success btn-sm">Mark as Completed</a>
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}

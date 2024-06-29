@@ -4,28 +4,32 @@ Home-Student
 {% endblock %}
 {% block sideitem %}
 <li class="sidebar-item">
-    <a href="#" class="sidebar-link">Home</a>
+    <a href="{% url 'stuhome' %}" class="sidebar-link">Home</a>
 </li>
 <li class="sidebar-item">
-    <a href="{% url 'mycourses' %}" class="sidebar-link">My Courses</a>
+    <a href="#" class="sidebar-link">My Courses</a>
 </li>
 {% endblock %}
 {% block main %}
-<h2 class="text-center" style="font-family: 'Poppins', sans-serif;">Welcom to the Online Learning Platform</h2><br>
-<h3 style="font-family: 'Poppins', sans-serif;">Course List</h3><hr>
+<h2 class="text-center" style="font-family: 'Poppins', sans-serif;">Enrolled Courses</h2><br>
 <div class="row row-cols-1 row-cols-md-4 g-4 py-5">
-    {% for course in courses %}
+    {% for course, enrollment in combined %}
     <div class="col">
         <div class="card">
             <img src="{{ course.cover.url }}" class="card-img-top" alt="Subject">
             <div class="card-body">
                 <h4 class="text-center card-title">{{ course.title }}</h4>
                 <h5 class="text-center card-title">Offered by {{ course.user }}</h5>
-                <h6 class="text-center card-title">{{ course.enrollment_count }} people already enrolled</h6>
             </div>
+            {% if enrollment %}
             <div class="d-flex justify-content-around">
-                <a href="{% url 'previewcourse' course.id %}" class="btn btn-lg btn-dark">View</a>
+                <a href="{% url 'mycoursepreview' course.id %}" class="btn btn-lg btn-success">Course Completed</a>
             </div>
+            {% else %}
+            <div class="d-flex justify-content-around">
+                <a href="{% url 'mycoursepreview' course.id %}" class="btn btn-lg btn-dark">Go To Course</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

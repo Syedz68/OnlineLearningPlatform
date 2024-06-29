@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Profile, Course
+from .models import Profile, Course, Lessons
 
 
 class ProfileForm(ModelForm):
@@ -20,6 +20,23 @@ class CourseForm(ModelForm):
         instance = super(CourseForm, self).save(commit=False)
         if self.user:
             instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+
+class LessonForm(ModelForm):
+    class Meta:
+        model = Lessons
+        fields = ['topic', 'content']
+    
+    def __init__(self, *args, **kwargs):
+        self.course = kwargs.pop('course', None)
+        super(LessonForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super(LessonForm, self).save(commit=False)
+        if self.course:
+            instance.course = self.course
         if commit:
             instance.save()
         return instance
