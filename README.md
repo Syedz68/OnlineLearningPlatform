@@ -25,3 +25,56 @@ This project is an online learning platform built using Django. The platform all
 ![o3](https://github.com/Syedz68/OnlineLearningPlatform/assets/107263740/7a16c40a-457a-438f-8543-34f00d9f311e)
 ![o4](https://github.com/Syedz68/OnlineLearningPlatform/assets/107263740/a7f87bf6-919c-4f67-983c-ba7739aa911f)
 ![05](https://github.com/Syedz68/OnlineLearningPlatform/assets/107263740/2ee662ba-3cc6-405b-b7d7-b8fc42b875bf)
+
+
+## Setup and Installation
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/Syedz68/onlinelearningplatform.git
+    cd onlinelearningplatform
+    ```
+
+2. **Create a virtual environment:**
+
+    ```bash
+    python3.12 -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
+
+3. **Install the dependencies:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Run the database migrations:**
+
+    ```bash
+    python manage.py migrate
+    ```
+
+5. **Create a superuser:**
+
+    ```bash
+    python manage.py createsuperuser
+    ```
+
+6. **Run the development server:**
+
+    ```bash
+    python manage.py runserver
+    ```
+
+7. **Access the application:**
+
+    Open your web browser and go to `http://127.0.0.1:8000`.
+
+## Requirements
+
+- Python 3.12.4
+- Django 5.0.6
+- djangorestframework 3.14.0
+- Pillow 10.3.0
+
