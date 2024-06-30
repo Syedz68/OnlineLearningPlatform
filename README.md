@@ -71,10 +71,4 @@ This project is an online learning platform built using Django. The platform all
 
     Open your web browser and go to `http://127.0.0.1:8000`.
 
-## Requirements
-
-- Python 3.12.4
-- Django 5.0.6
-- djangorestframework 3.14.0
-- Pillow 10.3.0
 
