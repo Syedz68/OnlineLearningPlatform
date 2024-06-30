@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Profile, Course, Lessons, Enrollment, Progress
 from .forms import ProfileForm, CourseForm, LessonForm
-from django.db.models import Count
+from django.db.models import Count, Q
 
 # Create your views here.
 def login_page(request):
@@ -129,7 +129,13 @@ def deletelesson(request, pk, lesson_pk):
 # Student Part
 @login_required(login_url='loginpage')
 def stuhomepage(request):
+    q = request.GET.get('q', '')
     courses = Course.objects.annotate(enrollment_count=Count('enrollment'))
+    
+    if q:
+        courses = courses.filter(
+            Q(title__icontains=q) | Q(description__icontains=q) | Q(user__username__icontains=q)
+        )
     return render(request, 'students/student_home.html', {'courses': courses})
 
 @login_required(login_url='loginpage')

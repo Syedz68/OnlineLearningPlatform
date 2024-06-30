@@ -1,134 +1,146 @@
 {% extends 'layout.html' %}
-{% block title%}
-Home-Instructor
+
+{% block title %}
+    Home-Instructor
 {% endblock %}
+
 {% block sideitem %}
-<li class="sidebar-item">
-    <a href="inshome" class="sidebar-link">Home</a>
-</li>
-<li class="sidebar-item">
-    <a href="{% url 'courseadd' %}" class="sidebar-link">Add Course</a>
-</li>
+    <li class="sidebar-item">
+        <a href="{% url 'inshome' %}" class="sidebar-link">Home</a>
+    </li>
+    <li class="sidebar-item">
+        <a href="{% url 'courseadd' %}" class="sidebar-link">Add Course</a>
+    </li>
 {% endblock %}
+
 {% block main %}
-<h2 class="text-center" style="font-family: 'Poppins', sans-serif;">{{ courses.title }}</h2>
-<div class="row row-cols-1 row-cols-md-4 g-4 py-5">
-    <div class="col">
-        <img src="{{ courses.cover.url }}" style="width: 250px;">
-    </div>
-    <div class="col">
-        <h3>Description</h3>
-        <p>{{ courses.description }}</p>
-        <a href="#" class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#editCourseModal{{ courses.id }}">Update Course</a>
-        <a href="{% url 'deletecourse' courses.id %}" onclick="return confirm('Course will be deleted')" class="btn btn-danger btn-lg">Delete Course</a>
-        <br><br>
-        <a href="#" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#addLessonModal{{ courses.id }}">Add Lessons</a>
-    </div>
-</div>
-<div class="row g-4 py-5">
-    <div class="col">
-        {% if lesson_list %}
-        <h2>Lesson Contents</h2>
-        <table class="table">
-            <thead class="table-dark">
-              <tr>
-                <th>Topic Name</th>
-                <th>Contents</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for data in lesson_list %}
-              <tr>
-                <td>{{ data.topic }}</td>
-                <td>{{ data.content }}</td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLessonModal{{ data.id }}">Edit</a>
-                    <a href="{% url 'deletelesson' courses.id data.id %}" onclick="return confirm('Lesson will be deleted')" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        {% else %}
-        <h2>No lessons yet</h2>
-        {% endif %}
-    </div>
-</div>
+    <div class="container">
+        <h2 class="text-center mt-4 mb-5">{{ courses.title }}</h2>
 
-<!--Edit Course Modals-->>
-<div class="modal fade" id="editCourseModal{{ courses.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Edit Course</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ courses.cover.url }}" class="img-fluid" alt="{{ courses.title }}">
             </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" action="{% url 'updatecourse' courses.id %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success mt-3">Update</button>
-                        <button type="button" class="btn btn-danger mt-3" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </form>
+            <div class="col-md-8">
+                <h3>Description</h3>
+                <p>{{ courses.description }}</p>
+                <div class="mb-4">
+                    <a href="#" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#editCourseModal{{ courses.id }}">Update Course</a>
+                    <a href="{% url 'deletecourse' courses.id %}" onclick="return confirm('Are you sure you want to delete this course?')" class="btn btn-danger">Delete Course</a>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addLessonModal{{ courses.id }}">Add Lessons</a>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!--Add Lesson Modal-->>
-<div class="modal fade" id="addLessonModal{{ courses.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Add Lesson to {{ courses.title }}</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <form method="post" action="{% url 'addlesson' courses.id %}">
-                    {% csrf_token %}
-                    {{ lesson_form.as_p }}
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary mt-3">Add</button>
-                        <button type="button" class="btn btn-danger mt-3" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Edit Lesson Modal-->>
-{% for l_form in lesson_forms %}
-<div class="modal fade" id="editLessonModal{{ l_form.instance.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Edit {{ l_form.instance.topic }}</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <form method="post" action="{% url 'updatelesson' courses.id l_form.instance.id  %}">
-                    {% csrf_token %}
-                    {{ l_form.as_p }}
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary mt-3">Edit</button>
-                        <button type="button" class="btn btn-danger mt-3" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </form>
+        <hr class="my-5">
+
+        <div class="row">
+            <div class="col">
+                {% if lesson_list %}
+                    <h2>Lesson Contents</h2>
+                    <table class="table table-bordered table-striped mt-4">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Topic Name</th>
+                                <th>Contents</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in lesson_list %}
+                                <tr>
+                                    <td>{{ data.topic }}</td>
+                                    <td>{{ data.content }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editLessonModal{{ data.id }}">Edit</a>
+                                        <a href="{% url 'deletelesson' courses.id data.id %}" onclick="return confirm('Are you sure you want to delete this lesson?')" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h2>No lessons yet</h2>
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
-{% endfor %}
+
+    <!-- Edit Course Modal -->
+    <div class="modal fade" id="editCourseModal{{ courses.id }}" tabindex="-1" aria-labelledby="editCourseModalLabel{{ courses.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCourseModalLabel{{ courses.id }}">Edit Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'updatecourse' courses.id %}">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Lesson Modal -->
+    <div class="modal fade" id="addLessonModal{{ courses.id }}" tabindex="-1" aria-labelledby="addLessonModalLabel{{ courses.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLessonModalLabel{{ courses.id }}">Add Lesson to {{ courses.title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'addlesson' courses.id %}">
+                        {% csrf_token %}
+                        {{ lesson_form.as_p }}
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Lesson Modals -->
+    {% for l_form in lesson_forms %}
+        <div class="modal fade" id="editLessonModal{{ l_form.instance.id }}" tabindex="-1" aria-labelledby="editLessonModalLabel{{ l_form.instance.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editLessonModalLabel{{ l_form.instance.id }}">Edit {{ l_form.instance.topic }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'updatelesson' courses.id l_form.instance.id %}">
+                            {% csrf_token %}
+                            {{ l_form.as_p }}
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

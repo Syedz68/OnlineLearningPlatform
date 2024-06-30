@@ -45,7 +45,6 @@ li{
 	overflow: hidden;
 	transition: all 0.35s ease-in-out;
 	width: 100%;
-	background: var(--bs-dark-bg-subtle);
 }
 
 .sidebar-logo{

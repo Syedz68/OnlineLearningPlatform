@@ -11,19 +11,26 @@ Home-Instructor
 </li>
 {% endblock %}
 {% block main %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in form %}
-		<div class="form-group">
-			<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-			{{ field }}
-			{% if field.errors %}
-			    <div class="error">{{ field.errors }}</div>
-			{% endif %}
-		</div>
-	{% endfor %}
-    <div class="input-group mb-1">
-        <button type="submit" class="btn btn-lg btn-dark w-100 fs-6">Add</button>
-    </div>
-</form>
+<h1 class="text-center">Add your course</h1><br><br>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<form method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{% for field in form %}
+				<div class="form-group">
+					<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+					{{ field }}
+					{% if field.errors %}
+						<div class="error">{{ field.errors }}</div>
+					{% endif %}
+				</div>
+			{% endfor %}
+			<div class="input-group mb-1">
+				<button type="submit" class="btn btn-lg btn-dark w-100 fs-6">Add</button>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-2"></div>
+</div>
 {% endblock %}

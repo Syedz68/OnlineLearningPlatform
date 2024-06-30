@@ -1,33 +1,49 @@
 {% extends 'layout.html' %}
-{% block title%}
-Home-Student
+
+{% block title %}
+    Home-Student
 {% endblock %}
+
 {% block sideitem %}
-<li class="sidebar-item">
-    <a href="#" class="sidebar-link">Home</a>
-</li>
-<li class="sidebar-item">
-    <a href="{% url 'mycourses' %}" class="sidebar-link">My Courses</a>
-</li>
+    <li class="sidebar-item">
+        <a href="#" class="sidebar-link">Home</a>
+    </li>
+    <li class="sidebar-item">
+        <a href="{% url 'mycourses' %}" class="sidebar-link">My Courses</a>
+    </li>
 {% endblock %}
+
 {% block main %}
-<h2 class="text-center" style="font-family: 'Poppins', sans-serif;">Welcom to the Online Learning Platform</h2><br>
-<h3 style="font-family: 'Poppins', sans-serif;">Course List</h3><hr>
-<div class="row row-cols-1 row-cols-md-4 g-4 py-5">
-    {% for course in courses %}
-    <div class="col">
-        <div class="card">
-            <img src="{{ course.cover.url }}" class="card-img-top" alt="Subject">
-            <div class="card-body">
-                <h4 class="text-center card-title">{{ course.title }}</h4>
-                <h5 class="text-center card-title">Offered by {{ course.user }}</h5>
-                <h6 class="text-center card-title">{{ course.enrollment_count }} people already enrolled</h6>
+    <div class="container">
+        <h2 class="text-center mt-5 mb-4" style="font-family: 'Poppins', sans-serif;">Welcome to the Online Learning Platform</h2>
+        <h3 class="text-center mb-4" style="font-family: 'Poppins', sans-serif;">Course List</h3>
+        
+        <!-- Search Form -->
+        <form method="get" action="{% url 'stuhome' %}">
+            <div class="input-group mb-3">
+                <input type="text" name="q" class="form-control" placeholder="Search courses ..." aria-label="Search courses">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
             </div>
-            <div class="d-flex justify-content-around">
-                <a href="{% url 'previewcourse' course.id %}" class="btn btn-lg btn-dark">View</a>
+        </form>
+        <hr>
+
+        <!-- Course Cards -->
+        <div class="row row-cols-1 row-cols-md-4 g-4 py-5">
+            {% for course in courses %}
+            <div class="col">
+                <div class="card">
+                    <img src="{{ course.cover.url }}" class="card-img-top" alt="Subject">
+                    <div class="card-body">
+                        <h4 class="text-center card-title">{{ course.title }}</h4>
+                        <h5 class="text-center card-title">Offered by {{ course.user }}</h5>
+                        <h6 class="text-center card-title">{{ course.enrollment_count }} people already enrolled</h6>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <a href="{% url 'previewcourse' course.id %}" class="btn btn-lg btn-dark">View</a>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
-</div>
 {% endblock %}
