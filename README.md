@@ -32,7 +32,7 @@ This project is an online learning platform built using Django. The platform all
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/Syedz68/onlinelearningplatform.git
+    git clone https://github.com/Syedz68/OnlineLearningPlatform.git
     cd onlinelearningplatform
     ```
 
